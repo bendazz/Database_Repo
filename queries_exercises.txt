@@ -1,0 +1,128 @@
+-- SQL Practice: Lahman batting + teams
+-- Topics: SELECT, WHERE, GROUP BY, SUM, COUNT(*), HAVING, INNER JOIN, ORDER BY, DESC, LIMIT
+-- Year used: 2010 (swap as desired)
+
+-- Q1: Top 10 home run hitters in 2010
+SELECT playerID, HR
+FROM batting
+WHERE yearID = 2010
+ORDER BY HR DESC
+LIMIT 10;
+
+-- Q2: Team total home runs in 2010, sorted highest to lowest
+SELECT teamID, SUM(HR) AS total_hr
+FROM batting
+WHERE yearID = 2010
+GROUP BY teamID
+ORDER BY total_hr DESC;
+
+-- Q3: Players with at least 100 RBI in 2010 (aggregate across stints)
+SELECT playerID, SUM(RBI) AS rbi_total
+FROM batting
+WHERE yearID = 2010
+GROUP BY playerID
+HAVING SUM(RBI) >= 100
+ORDER BY rbi_total DESC;
+
+-- Q4: Team names with total hits in 2010
+-- Hint: teams already stores season totals (H). Use this direct query for simplicity.
+SELECT name, H AS total_hits
+FROM teams
+WHERE yearID = 2010
+ORDER BY total_hits DESC;
+
+-- Optional practice: aggregate from batting via INNER JOIN + SUM for team totals
+SELECT t.name, SUM(b.H) AS total_hits
+FROM batting b
+INNER JOIN teams t
+  ON b.teamID = t.teamID AND b.yearID = t.yearID
+WHERE b.yearID = 2010
+GROUP BY t.name
+ORDER BY total_hits DESC;
+
+-- Q5: Batting average leaders (>= 300 AB) in 2010
+SELECT playerID,
+       SUM(H) AS hits,
+       SUM(AB) AS abs,
+       ROUND(1.0 * SUM(H) / NULLIF(SUM(AB), 0), 3) AS batting_avg
+FROM batting
+WHERE yearID = 2010
+GROUP BY playerID
+HAVING SUM(AB) >= 300
+ORDER BY batting_avg DESC
+LIMIT 10;
+
+
+
+-- Q6: League stolen base totals in 2010 with totals > 500
+SELECT lgID, SUM(SB) AS total_sb
+FROM batting
+WHERE yearID = 2010
+GROUP BY lgID
+HAVING SUM(SB) > 500
+ORDER BY total_sb DESC;
+
+-- Q7: Top 5 teams by win percentage in 2010
+SELECT name, W, L, ROUND(1.0 * W / (W + L), 3) AS win_pct
+FROM teams
+WHERE yearID = 2010
+ORDER BY win_pct DESC
+LIMIT 5;
+
+-- Q8: Teams scoring >= 800 runs in 2010
+SELECT name, R
+FROM teams
+WHERE yearID = 2010
+  AND R >= 800
+ORDER BY R DESC;
+
+-- Q9: Players with SO/BB ratio > 3 (>= 300 AB) in 2010
+SELECT playerID,
+       SUM(AB) AS abs,
+       SUM(SO) AS so,
+       SUM(BB) AS bb,
+       ROUND(1.0 * SUM(SO) / NULLIF(SUM(BB), 0), 2) AS so_bb_ratio
+FROM batting
+WHERE yearID = 2010
+GROUP BY playerID
+HAVING SUM(AB) >= 300
+   AND SUM(BB) > 0
+   AND (1.0 * SUM(SO) / SUM(BB)) > 3
+ORDER BY so_bb_ratio DESC
+LIMIT 20;
+
+
+-- Q10: Teams with at least 90 wins AND at least 800 runs (2010)
+-- Demonstrates AND in WHERE
+SELECT name, W, R
+FROM teams
+WHERE yearID = 2010
+  AND W >= 90
+  AND R >= 800
+ORDER BY W DESC, R DESC;
+
+-- Q11: AL or NL teams with win percentage > .550 (2010)
+-- Demonstrates OR in WHERE + safe division
+SELECT name, lgID, W, L,
+       ROUND(W * 1.0 / NULLIF(W + L, 0), 3) AS win_pct
+FROM teams
+WHERE yearID = 2010
+  AND (lgID = 'AL' OR lgID = 'NL')
+  AND (W * 1.0 / NULLIF(W + L, 0)) > 0.55
+ORDER BY win_pct DESC;
+
+-- Q12: Teams with names containing 'Sox' (2010)
+-- Demonstrates LIKE with wildcard %
+SELECT name
+FROM teams
+WHERE yearID = 2010
+  AND name LIKE '%Sox%'
+ORDER BY name;
+
+-- Q13: Teams with city names starting with 'New' OR 'San' (2010)
+-- Demonstrates LIKE prefixes + OR
+SELECT name
+FROM teams
+WHERE yearID = 2010
+  AND (name LIKE 'New %' OR name LIKE 'San %')
+ORDER BY name;

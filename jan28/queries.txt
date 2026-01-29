@@ -1,0 +1,53 @@
+SELECT playerID, yearID, teamID, HR
+FROM BATTING;
+
+
+SELECT playerID, yearID, teamID,HR
+FROM BATTING
+WHERE yearID = 1976;
+
+
+
+#Select all records where the homerun total is greater than 20.#
+SELECT playerID, yearID, teamID, HR
+FROM BATTING
+where HR > 20
+
+
+#Select all records where the homerun total is greater that 20 and the year is 1976.#
+SELECT playerID, yearID, teamID,HR
+FROM BATTING
+where HR > 20 and yearID = 1976
+
+#Select all records where the year is 1976 or 1980#
+SELECT playerID, yearID, teamID,HR
+FROM BATTING
+where yearID = 1976 or yearID = 1980
+
+#Select all records where the year is 1976 or 1980 and the homerun total is greater that 20
+SELECT playerID, yearID, teamID, HR
+FROM BATTING
+WHERE (yearID = 1976 or yearID = 1980) and HR > 20
+
+#Select all records where the year is 1976 and the team is the Phillies.  Order by HR decreasing.
+SELECT playerID yearID, teamID, HR
+FROM BATTING
+WHERE yearID = 1976 and teamID = 'PHI'
+ORDER BY  HR desc
+
+
+#Select all records where the year is 1976, the team is the Phillies, and the homerun total is not 0.  Order by HR descending
+SELECT playerID, yearID, teamID, HR
+FROM BATTING
+WHERE yearID = 1976 and teamID = 'PHI' and HR != 0
+ORDER BY HR desc
+
+#Select all records where the teamID begins with P and the year is 1976.
+SELECT playerID, yearID, teamID, HR
+FROM Batting
+WHERE yearID = 1976 and teamID like 'P%'
+
+#Find Babe Ruth's id  
+SELECT playerID
+FROM Batting
+WHERE playerID LIKE 'ruth%'

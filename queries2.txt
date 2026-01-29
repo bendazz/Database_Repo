@@ -1,0 +1,8 @@
+Find the 10 players with the most career homeruns
+Year by Year list of Phillies total homeruns
+List of teams in 2025 and season homeruns
+Same as above, but limit to 200 or more
+Select everything from join between batting and teams, limit 10
+List of all players from 1976 with team name
+Did anyone play for more than one team in 1976
+Babe Ruth's records, year, team name, and HR
