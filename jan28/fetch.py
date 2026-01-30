@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 
-conn = sqlite3.connect('baseball.db')
+conn = sqlite3.connect('../baseball.db')
 cursor = conn.cursor()
 query = """
     SELECT playerID,teamID,yearID,HR
