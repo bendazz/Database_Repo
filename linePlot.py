@@ -48,6 +48,9 @@ def f(id):
     records_df = pd.DataFrame(records, columns=['Year', 'Home Runs'])
     return records_df
 
+    players = []
+
+
     
 
 
@@ -55,7 +58,7 @@ def f(id):
 
 with gr.Blocks() as iface:
     dd = gr.Dropdown(choices=players, label="Select player", interactive=True)
-    plot = gr.LinePlot(x='Year', y='Home Runs')
+    plot = gr.LinePlot(x='Year', y='Home Runs',y_lim = [0,60])
     dd.change(fn=f, inputs=dd, outputs=plot)
 
 iface.launch()

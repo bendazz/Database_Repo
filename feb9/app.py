@@ -4,16 +4,15 @@ import pandas as pd
 conn = sqlite3.connect('../baseball.db')
 cursor = conn.cursor()
 query = """
-   SELECT teamID, sum(HR) as seasonHR
-    FROM batting
-    WHERE yearID = 2025
-    GROUP BY teamID
-    HAVING seasonHR >= 200
+   SELECT batting.yearID,name,batting.HR
+   FROM batting inner join teams
+   ON batting.teamID = teams.teamID  AND batting.yearID = teams.yearID
+   WHERE playerID = 'ruthba01'
 """
 cursor.execute(query)
 records = cursor.fetchall()
 conn.close()
 
-records_df = pd.DataFrame(records,columns = ['team','homeruns'])
+records_df = pd.DataFrame(records)
 
 print(records_df)
