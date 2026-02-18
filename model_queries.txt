@@ -1,0 +1,8 @@
+select playerID and teamID from batting
+select first and last name from people
+select playerID and teamID from batting where team is phillies
+select playerID, teamID, yearID from batting where team is phillies and year is 1976
+same as above, but 1980 too
+select playerID,HR where team is phillies,year is 1976, order by HR
+total HR for phillies order by total HR
+total HR for phillies just totals over 50, order by total HR
